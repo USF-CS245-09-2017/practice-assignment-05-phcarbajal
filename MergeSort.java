@@ -1,48 +1,62 @@
 public class MergeSort implements SortingAlgorithm
 {
-    public void sort(int [] arr)
+    public void sort(int[] arr) 
     {
-        mergesort(arr, new int[arr.length], 0, arr.length - 1);
-    } 
-    
-    public void mergesort(int[] arr, int[] temp, int leftStart, int rightEnd)
-    {
-        if(leftStart >= rightEnd)
+		int n = arr.length;
+		
+        if (n < 2) 
         {
-            return;
-        }
-        int middle = (leftStart + rightEnd) / 2;
-        mergesort(arr, temp, leftStart, middle);
-        mergesort(arr, temp, middle + 1, rightEnd);
-        mergeHalves(arr, temp, leftStart, rightEnd);
-    }
-
-    public void mergeHalves(int[] arr, int[] temp, int leftStart, int rightEnd)
-    {
-        int leftEnd = (rightEnd + leftStart) / 2;
-        int rightStart = leftEnd + 1;
-        int size = rightEnd + leftStart + 1;
-
-        int left = leftStart;
-        int right = rightStart;
-        int index = leftStart;
-
-        while (left <= leftEnd && right <= rightEnd)
+			return; 
+        } 
+        else 
         {
-            if(arr[left] <= arr[right])
+			int mid = n / 2;
+			
+			int[] left = new int[mid];
+			int [] right = new int [n - mid];
+			
+            for (int i = 0; i < mid; i++) 
             {
-                temp[index] = arr[left];
-                left++;
-            }
-            else
+				left[i] = arr[i];
+			}
+			
+            for (int i = 0; i < n - mid; i++) 
             {
-                temp[index] = arr[right];
-                right++;
-            }
-            index++;
-        }
-        System.arraycopy(arr, left, temp, index, leftEnd - left + 1);
-        System.arraycopy(arr, right, temp, index, rightEnd - right + 1);
-        System.arraycopy(temp, leftStart, arr, leftStart, size);
-    }
+				right[i] = arr[mid + i];
+			}
+			
+			sort(left);
+			sort(right);
+			
+			merge(arr, left, right, mid, n - mid);
+		}
+		
+	}
+	
+    public void merge(int[] arr, int[] left, int[] right, int leftLength, int rightLength) 
+    {
+		int l = 0, r = 0, i = 0;
+		
+        while (l < leftLength && r < rightLength) 
+        {
+            if (left[l] <= right[r]) 
+            {
+				arr[i++] = left[l++];
+            } 
+            else 
+            {
+				arr[i++] = right[r++];
+			}
+		}
+		
+        while(l < leftLength) 
+        {
+			arr[i++] = left[l++];
+		}
+		
+        while(r < rightLength) 
+        {
+			arr[i++] = right[r++];
+		}
+	}
 }

@@ -2,48 +2,53 @@ public class QuickSort implements SortingAlgorithm
 {
     public void sort(int[] arr)
     {
-        quicksort(arr, 0, arr.length - 1);
-    }
-
-    public void quicksort(int[] arr, int left, int right)
+		sort(arr, 0, arr.length - 1);
+		
+	}
+	
+    public void sort(int[] arr, int l, int r) 
     {
-        if (left >= right)
+        if (l < r) 
         {
-            return;
-        }
-
-        int pivot = arr[(left + right) / 2];
-        int index = partition(arr, left, right, pivot);
-        quicksort(arr, left, index - 1);
-        quicksort(arr, index, right);
-    }
-
-    public int partition(int[] arr, int left, int right, int pivot)
-    {
-        while (left <= right)
-        {
-            while(arr[left] < pivot)
+			int p = partition(arr, l, r);
+			
+			sort(arr, l, p - 1);
+			sort(arr, p + 1, r);
+			
+		}
+	}
+	
+	public int partition(int[] arr, int l, int r) {
+		if (l < r) {
+			int pivot = l;
+			int i = l + 1; // offset
+			int j = r;
+			
+            while (i < j) 
             {
-                left++;
-            }
-            while(arr[right] > pivot)
-            {
-                right--;
-            }
-            if (left <= right)
-            {
-                swap(arr, left, right);
-                left++;
-                right--;
-            }
-        }
-        return left;
-    }
-
-    public void swap(int[] arr, int left, int right)
-    {
-        int temp = arr[left];
-        arr[left] = arr[right];
-        arr[right] = arr[temp];
+                while (i <= r && arr[i] <= arr[pivot]) 
+                {
+					++i; // increment, then assign val
+				}
+                while (j >= i && arr[j] > arr[pivot]) 
+                {
+					--j; // decrement, then assign val
+				}
+				
+				if (i <= r && i < j) {
+					int temp = arr[i];
+					arr[i] = arr[j];
+					arr[j] = temp;
+				}
+			}
+			
+			int temp = arr[pivot];
+			arr[pivot] = arr[j];
+			arr[j] = temp;  // pivot to the mid
+			
+			return j;
+		}
+		
+		return l;
     }
 }
